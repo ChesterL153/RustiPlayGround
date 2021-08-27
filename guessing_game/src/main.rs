@@ -1,9 +1,10 @@
 use std::io;
 use rand::Rng;
+use std::cmp::Ordering;
 
 fn main() {
     println!("Guessing game.");
-    println!("Please choose a number");
+    println!("Please choose a number from 1 to 10 ...");
 
     let secret = rand::thread_rng().gen_range(1..11); //gen range is lower bound .. upper bound + 1
     let mut number = String::new();
@@ -12,5 +13,13 @@ fn main() {
         .read_line(&mut number)
         .expect("Not input correctly");
 
-    println!("You guessed: {} the secret number is : {}", number, secret);
+    let number: u32 = number.trim().parse().expect("Please type a number!");
+
+    match number.cmp(&secret) {
+        Ordering::Less => print!("Too small!"),
+        Ordering::Greater => print!("Too big!"),
+        Ordering::Equal => print!("You win!"),
+    }
+
+    println!(" The secret number is: {}", secret);
 }
